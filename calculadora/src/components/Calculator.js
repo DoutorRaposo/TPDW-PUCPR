@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Calculator.css';
 
 function Calculator() {
@@ -6,6 +6,7 @@ function Calculator() {
   const [valorAnterior, setValorAnterior] = useState(null);
   const [operacao, setOperacao] = useState(null);
   const [aguardandoNovoValor, setAguardandoNovoValor] = useState(false);
+  const [expressao, setExpressao] = useState('');
 
   // Adiciona digito ao visor
   const digitarNumero = (digito) => {
@@ -29,6 +30,16 @@ function Calculator() {
     }
   };
 
+  // Formata o resultado limitando casas decimais
+  const formatarResultado = (valor) => {
+    if (typeof valor === 'string') return valor;
+    const texto = String(valor);
+    if (texto.includes('.') && texto.split('.')[1].length > 8) {
+      return String(parseFloat(valor.toFixed(8)));
+    }
+    return texto;
+  };
+
   // Executa o calculo entre dois valores
   const calcular = (a, b, op) => {
     switch (op) {
@@ -46,9 +57,11 @@ function Calculator() {
 
     if (valorAnterior !== null && !aguardandoNovoValor) {
       const resultado = calcular(valorAnterior, valorAtual, operacao);
-      setValorVisor(String(resultado));
+      setValorVisor(formatarResultado(resultado));
+      setExpressao(expressao + valorVisor + ' ' + novaOperacao + ' ');
       setValorAnterior(resultado);
     } else {
+      setExpressao(expressao + valorVisor + ' ' + novaOperacao + ' ');
       setValorAnterior(valorAtual);
     }
 
@@ -58,12 +71,13 @@ function Calculator() {
 
   // Calcula o resultado ao pressionar =
   const calcularResultado = () => {
-    if (operacao === null || valorAnterior === null) return;
+    if (operacao === null || valorAnterior === null || aguardandoNovoValor) return;
 
     const valorAtual = parseFloat(valorVisor);
     const resultado = calcular(valorAnterior, valorAtual, operacao);
 
-    setValorVisor(String(resultado));
+    setExpressao(expressao + valorVisor + ' =');
+    setValorVisor(formatarResultado(resultado));
     setValorAnterior(null);
     setOperacao(null);
     setAguardandoNovoValor(true);
@@ -75,11 +89,13 @@ function Calculator() {
     setValorAnterior(null);
     setOperacao(null);
     setAguardandoNovoValor(false);
+    setExpressao('');
   };
 
   return (
     <div className="calculator">
       <div className="display">
+        <span className="display-expression">{expressao}{!aguardandoNovoValor && operacao ? valorVisor : ''}</span>
         <span className="display-value">{valorVisor}</span>
       </div>
       <div className="buttons">
