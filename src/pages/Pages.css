@@ -1,0 +1,45 @@
+.page {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 32px 40px;
+  min-width: 320px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.page h1 {
+  margin: 0 0 16px;
+  color: #333;
+}
+
+.page-info {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.page-info p {
+  margin: 6px 0;
+  color: #555;
+}
+
+.page-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.page-button {
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  background-color: #f5923a;
+  color: #fff;
+  transition: filter 0.15s;
+}
+
+.page-button:hover {
+  filter: brightness(0.9);
+}
